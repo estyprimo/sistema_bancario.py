@@ -1,0 +1,69 @@
+menu = f"""
+MENU
+
+[a] Depósito
+[b] Saque
+[c] Extrato
+[d] Sair
+
+=> """
+
+extrato = ""
+total = 0
+quantidade_saques = 0 ## só podem ter 3 no total durante uma operação
+limite = 500
+LIMITE_SAQUES = 3
+
+while True:
+    escolha = input(menu)
+
+    if escolha == "a":
+        deposito = float(input("Qual valor você deseja depositar? "))
+
+        if deposito > 0:
+            total = deposito
+            extrato += f"Depósito: R${deposito:.2f}\n"
+            print ("Depósito efetuado com sucesso!")
+        else:
+            print("Valor inválido, por favor, insira um número positivo.")
+    
+    elif escolha == "b":
+        retirada = float(input("Por favor, insira o valor que deseja retirar da sua conta: R$"))
+
+        excedeu_saldo = retirada > total
+        excedeu_limite = retirada > limite
+        excedeu_saques = quantidade_saques > LIMITE_SAQUES
+
+        if excedeu_saldo:
+            print("\nOperação inválida. O valor inserido é maior do que o valor em conta.\n")
+
+        
+        elif excedeu_limite:
+            print("\nOperação inválida. Você só pode retirar abaixo de R$ 501.00 tente novamente.")
+        
+        elif excedeu_saques:
+            print("\nOperação inválida. Você excedeu a quantidade de saques possíveis para um dia, tente novamente amanhã.")
+
+        elif retirada > 0: 
+            print("\nSaque efetuado com sucesso!")
+            total-=retirada
+            extrato += f"Saque: R${retirada:.2f}\n"
+            quantidade_saques+=1
+           
+        else:
+            print("Operação falhou! Tente novamente mais tarde.")
+
+            
+
+    elif escolha == "c":
+        letter = "EXTRATO"
+        print(letter.center(21, " "))
+        print("Ainda não foram realizadas movimentações." if not extrato else extrato)
+        print(f"Saldo: R${total:.2f}")
+
+    elif escolha == "d":
+        print ("Operação finalizada com sucesso.")
+        break
+
+    else:
+    ("Você inseriu uma opção inexistente, por favor, cheque o menu e tente novamente.")
